@@ -1,23 +1,22 @@
 import pygame
 import random
 
-largura = 400
-largura_obstaculo = 20
-altura_obstaculo = 150
-altura = 300
+largura = 1000
+largura_obstaculo = 2000
+altura_obstaculo = 500
+altura = 1200
 frames = 60
-# posição do solo
-solo = 200
-# Campo utilizado para manipular a velocidade do cenário
+#posição do solo
+solo = 320
+#Campo utilizado para manipular a velocidade do cenário
 velocidade_mapa = 2
 
-
-# Manipulação do obstaculo na base inferior da tela
+#Manipulação do obstaculo na base inferior da tela
 class Cano(pygame.sprite.Sprite):
     def __init__(self, imagem):
         self.imagem = imagem
         self.rect = self.imagem.get_rect()
-        self.rect.top, self.rect.left = 27, largura_obstaculo + random.randint(0, 100)
+        self.rect.top, self.rect.left = 270, largura_obstaculo + random.randint(0, 1000)
 
     def update(self, superficie):
         superficie.blit(self.imagem, self.rect)
@@ -26,20 +25,15 @@ class Cano(pygame.sprite.Sprite):
         self.rect.move_ip(-velocidade_mapa, 0)
 
     def recriar(self):
-        if self.rect.left < -100:
-            self.rect.top, self.rect.left = 27, largura_obstaculo + random.randint(
-                0, 100
-            )
+        if self.rect.left < -400:
+            self.rect.top, self.rect.left = 270, largura_obstaculo + random.randint(0, 2000)
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, imagem):
         self.imagem = imagem
         self.rect = self.imagem.get_rect()
-        self.rect.top, self.rect.left = (
-            solo,
-            100,
-        )  # Ajuste a posição inicial para o solo e a esquerda
+        self.rect.top, self.rect.left = (solo, 100)
 
     def mover(self, vx, vy):
         self.rect.move_ip(vx, vy)
@@ -58,25 +52,22 @@ def colisao(player, rect):
 def main(frames):
     pygame.init()
     pygame.font.init()
-    # pygame.mixer.init()
-    # pygame.mixer.music.load('Top Gear.mp3')
-    # pygame.mixer.music.play(loops=-1)
-    # pygame.mixer.music.set_volume(0.05)
+    #pygame.mixer.init()
+    #pygame.mixer.music.load('Top Gear.mp3')
+    #pygame.mixer.music.play(loops=-1)
+    #pygame.mixer.music.set_volume(0.05)
 
     font = pygame.font.SysFont(None, 70)
     tela = pygame.display.set_mode([largura, altura])
 
     relogio = pygame.time.Clock()
 
-    img_girl = pygame.transform.scale(
-        pygame.image.load("src/girl.png").convert(), (100, 100)
-    )
-    img_girl.set_colorkey((0, 0, 0))
+    img_girl = pygame.image.load('girl.png').convert_alpha()
     jogador = Player(img_girl)
 
-    img_fundo1 = pygame.image.load("src/fundo.png").convert_alpha()
-    img_fundo2 = pygame.image.load("src/fundo.png").convert_alpha()
-    cano = pygame.image.load("src/Water.png").convert_alpha()
+    img_fundo1 = pygame.image.load('fundo.png').convert_alpha()
+    img_fundo2 = pygame.image.load('fundo.png').convert_alpha()
+    cano = pygame.image.load('Water.png').convert_alpha()
 
     vx, vy = 0, 0
     velocidade = 20
@@ -87,6 +78,7 @@ def main(frames):
     cano = Cano(cano)
     pontos = 0
     while sair is False:
+
         if int(pontos) % 50 == 0:
             frames += 1
         pontos += 0.1
@@ -111,7 +103,7 @@ def main(frames):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP and jogador.rect.top == solo:
                     uppress = True
-                    vy = -velocidade
+                    vy = - velocidade
 
         tela.blit(img_fundo1, (x, 0))
         tela.blit(img_fundo2, (y, 0))
@@ -122,15 +114,15 @@ def main(frames):
 
         if colisao(jogador, cano):
             sair = True
-            print(f"Você fez {int(pontos)} pontos")
+            print(f'Você fez {int(pontos)} pontos')
             frames = 60
             main(frames)
 
-        img = font.render(f"{int(pontos)} pontos", True, "white")
+        img = font.render(f'{int(pontos)} pontos', True, 'white')
         tela.blit(img, (700, 100))
         relogio.tick(frames)
         pygame.display.update()
     pygame.quit()
 
 
-# main(frames)
+main(frames)
