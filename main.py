@@ -1,15 +1,14 @@
 import pygame
 import random
-from util import *
 from gameover import game_over
 
 largura = 1000
 largura_obstaculo = 2000
 altura_obstaculo = 500
-altura = 400
+altura = 500
 frames = 60
 # posição do solo
-solo = 320
+solo = 220
 # Campo utilizado para manipular a velocidade do cenário
 velocidade_mapa = 2
 
@@ -57,6 +56,10 @@ def colisao(player, rect):
 def main(frames, character):
     pygame.init()
     pygame.font.init()
+    # pygame.mixer.init()
+    # pygame.mixer.music.load('Top Gear.mp3')
+    # pygame.mixer.music.play(loops=-1)
+    # pygame.mixer.music.set_volume(0.05)
 
     font = pygame.font.SysFont(None, 70)
     tela = pygame.display.set_mode([largura, altura])
@@ -78,8 +81,13 @@ def main(frames, character):
 
     img_fundo1 = pygame.image.load("src/fundo.png").convert_alpha()
     img_fundo2 = pygame.image.load("src/fundo.png").convert_alpha()
-    cano = pygame.image.load("src/fire.png").convert_alpha()
+    img_fundo1 = pygame.transform.scale(img_fundo1, (largura, altura))
+    img_fundo2 = pygame.transform.scale(img_fundo2, (largura, altura))
+    cano = pygame.transform.scale(
+        pygame.image.load("src/fire.png").convert(), (100, 100)
+    )
 
+    cano.set_colorkey((0, 0, 0))
     vx, vy = 0, 0
     velocidade = 20
     uppress = False
@@ -123,6 +131,7 @@ def main(frames, character):
         cano.mover()
 
         if colisao(jogador, cano):
+            sair = True
             print(f"Você fez {int(pontos)} pontos")
             frames = 60
             game_over()
