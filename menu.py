@@ -3,6 +3,8 @@ import sys
 import pygame.gfxdraw
 import os
 from select_character import select_character
+from som import start_background_sound, sound_configuration
+
 
 # from som import sound_configuration
 
@@ -42,8 +44,11 @@ button_sound_rect = pygame.Rect(WIDTH // 2 - 150, HEIGHT // 2 + 70, 300, 50)
 
 # Função para a tela de menu
 def main_menu():
+    start_background_sound()
+    # Mapeando o botao voltar do android como K_ESCAPE (ESC)
     while True:
         for event in pygame.event.get():
+            # Especifico para android
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -57,6 +62,7 @@ def main_menu():
                     # Adicione a lógica para exibir as instruções aqui
                 elif button_sound_rect.collidepoint(pygame.mouse.get_pos()):
                     print("Botão de Ligar/Desligar Som pressionado!")
+                    sound_configuration()
                     # sound_configuration()
                     # Adicione a lógica para ligar/desligar o som aqui
 

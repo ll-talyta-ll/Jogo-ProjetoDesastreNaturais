@@ -1,74 +1,96 @@
-# import pygame
-# import sys
+import pygame
+import sys
 
-# # Inicialize o Pygame
-# pygame.init()
+# Inicialize o mixer do pygame
+pygame.mixer.init()
+pygame.init()
 
-# # Defina as configurações da tela
-# WIDTH, HEIGHT = 400, 300
-# SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-# pygame.display.set_caption("Configuração de Som")
+# Defina as configurações da tela
+WIDTH, HEIGHT = 400, 300
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Configuração do Som")
 
-# # Carregue o background da tela de configuração de som
-# background = pygame.image.load("src/fundo.png").convert()
+# Carregue o background
+background = pygame.image.load("src/fundo.png").convert()
 
-# # Carregue as imagens dos botões (som de fundo e efeitos sonoros)
-# # sound_background_on = pygame.image.load("src/sound_background_on.png").convert()
-# # sound_background_off = pygame.image.load("src/sound_background_off.png").convert()
-# # sound_effects_on = pygame.image.load("src/sound_effects_on.png").convert()
-# # sound_effects_off = pygame.image.load("src/sound_effects_off.png").convert()
+# Defina cores
+WHITE = (255, 255, 255)
+BLUE = (0, 0, 255)
 
-# # Defina as posições dos botões
-# # sound_background_rect = sound_background_on.get_rect(center=(WIDTH // 2, HEIGHT // 3))
-# # sound_effects_rect = sound_effects_on.get_rect(center=(WIDTH // 2, 2 * HEIGHT // 3))
+# Carregue a fonte personalizada
+font = pygame.font.Font("src/IrishGrover-Regular.ttf", 24)
 
-# # Inicialize as variáveis para controlar o estado do som
-# sound_background_enabled = True
-# sound_effects_enabled = True
+# Renderize o texto dos botões com a fonte personalizada
+font_small = pygame.font.Font("src/IrishGrover-Regular.ttf", 18)
 
+# Renderize o título
+font_title = pygame.font.Font("src/IrishGrover-Regular.ttf", 36)
+text_title = font_title.render("Configuração do Som", True, WHITE)
+text_title_rect = text_title.get_rect(center=(WIDTH // 2, 50))
 
-# # Função para a tela de configuração de som
-# def sound_configuration():
-#     # while True:
-#     #     for event in pygame.event.get():
-#     #         if event.type == pygame.QUIT:
-#     #             pygame.quit()
-#     #             sys.exit()
-#     #         if event.type == pygame.MOUSEBUTTONDOWN:
-#     #             # if sound_background_rect.collidepoint(pygame.mouse.get_pos()):
-#     #             #     sound_background_toggle()
-#     #             # elif sound_effects_rect.collidepoint(pygame.mouse.get_pos()):
-#     #             #     sound_effects_toggle()
+# Carregue o som de fundo
+background_sound = pygame.mixer.Sound("src/som_fundo.mp3")
 
-#     #     SCREEN.fill((255, 255, 255))
-#     #     SCREEN.blit(background, (0, 0))
-
-#     #     # # Desenhe os botões de som de fundo
-#     #     # if sound_background_enabled:
-#     #     #     SCREEN.blit(sound_background_on, sound_background_rect)
-#     #     # else:
-#     #     #     SCREEN.blit(sound_background_off, sound_background_rect)
-
-#     #     # # Desenhe os botões de efeitos sonoros
-#     #     # if sound_effects_enabled:
-#     #     #     SCREEN.blit(sound_effects_on, sound_effects_rect)
-#     #     # else:
-#     #     #     SCREEN.blit(sound_effects_off, sound_effects_rect)
-
-#     # pygame.display.flip()
+# Variável para controlar o estado do som de fundo
+sound_background_on = True
+sound_special_on = True
 
 
-# def sound_background_toggle():
-#     global sound_background_enabled
-#     sound_background_enabled = not sound_background_enabled
-#     # Adicione a lógica para ligar/desligar o som de fundo aqui
+# Função para ligar/desligar o som de fundo
+def toggle_background_sound():
+    global sound_background_on
+    if sound_background_on:
+        background_sound.stop()
+        sound_background_on = False
+    else:
+        background_sound.play(-1)  # -1 indica reprodução em loop
+        sound_background_on = True
 
 
-# def sound_effects_toggle():
-#     global sound_effects_enabled
-#     sound_effects_enabled = not sound_effects_enabled
-#     # Adicione a lógica para ligar/desligar os efeitos sonoros aqui
+# Função para iniciar o som de fundo
+def start_background_sound():
+    global background_sound  # Declare background_sound como global
+    if sound_background_on:
+        background_sound.play(-1)
 
 
-# if __name__ == "__main__":
-#     sound_configuration()
+# Função para parar o som de fundo
+def stop_background_sound():
+    background_sound.stop()
+
+
+# Função para exibir a tela de controle de som
+def sound_configuration():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if button_background_rect.collidepoint(pygame.mouse.get_pos()):
+                    toggle_background_sound()  # Ligar/desligar som de fundo
+
+        screen.fill(WHITE)
+        # Desenhe o background
+        screen.blit(background, (0, 0))
+        # Desenhe o título
+        screen.blit(text_title, text_title_rect)
+        # Desenhe o botão de controle de som de fundo
+        button_background_rect = pygame.Rect(100, 100, 200, 50)
+        pygame.draw.rect(screen, BLUE, button_background_rect)
+        # Renderize o texto no botão de controle de som de fundo
+        text_background = font_small.render(
+            "Som de Fundo: " + ("Ligado" if sound_background_on else "Desligado"),
+            True,
+            WHITE,
+        )
+        button_background_text_rect = text_background.get_rect(
+            center=button_background_rect.center
+        )
+        screen.blit(text_background, button_background_text_rect)
+
+        pygame.display.flip()
+
+
+if __name__ == "__main__":
+    sound_configuration()
