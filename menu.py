@@ -13,8 +13,7 @@ from main import main
 pygame.init()
 
 # Defina as configurações da tela
-WIDTH, HEIGHT = 400, 300
-SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
+WIDTH, HEIGHT = 1000, 500
 pygame.display.set_caption("Menu Pygame")
 
 # Carregue o background
@@ -45,6 +44,7 @@ button_sound_rect = pygame.Rect(WIDTH // 2 - 150, HEIGHT // 2 + 70, 300, 50)
 
 # Função para a tela de menu
 def main_menu():
+    SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
     while True:
         start_background_sound()
         for event in pygame.event.get():

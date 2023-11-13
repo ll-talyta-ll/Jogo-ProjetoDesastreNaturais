@@ -1,6 +1,7 @@
 import pygame
 import random
 from gameover import game_over
+from som import start_special_sound, special_sound
 
 largura = 1000
 largura_obstaculo = 2000
@@ -15,10 +16,11 @@ velocidade_mapa = 2
 
 # Manipulação do obstáculo na base inferior da tela
 class Cano(pygame.sprite.Sprite):
-    def __init__(self, imagem):
+    def __init__(self, imagem, som_colisao):
         self.imagem = imagem
         self.rect = self.imagem.get_rect()
         self.rect.top, self.rect.left = 270, largura_obstaculo + random.randint(0, 1000)
+        self.som_colisao = som_colisao
 
     def update(self, superficie):
         superficie.blit(self.imagem, self.rect)
@@ -31,6 +33,10 @@ class Cano(pygame.sprite.Sprite):
             self.rect.top, self.rect.left = 270, largura_obstaculo + random.randint(
                 0, 2000
             )
+
+    def reproduzir_som_colisao(self):
+        pygame.mixer.Sound.play(self.som_colisao)
+        start_special_sound()  # Chama a função para iniciar o som especial
 
 
 # Nova classe para representar moedas
@@ -110,7 +116,7 @@ def main(frames, character):
         pygame.image.load("src/coin.png").convert(), (50, 50)
     )
 
-    # cano.set_colorkey((0, 0, 0))
+    cano.set_colorkey((0, 0, 0))
     moeda.set_colorkey((0, 0, 0))
 
     vx, vy = 0, 0
@@ -119,13 +125,13 @@ def main(frames, character):
     sair = False
     x = 0
     y = largura
-    cano = Cano(cano)
+    cano = Cano(cano, special_sound)
     moeda = Moeda(moeda)
     pontos = 0
     while sair is False:
         if int(pontos) % 50 == 0:
             frames += 1
-        pontos += 0.1
+        pontos += 1
         cano.recriar()
         moeda.recriar()
 
@@ -162,8 +168,9 @@ def main(frames, character):
         if colisao(jogador, cano):
             sair = True
             print(f"Você fez {int(pontos)} pontos")
+            cano.reproduzir_som_colisao()
             frames = 60
-            game_over()
+            game_over(pontos)
 
         if colisao(jogador, moeda):
             pontos += 10

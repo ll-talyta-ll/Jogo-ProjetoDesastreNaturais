@@ -6,8 +6,7 @@ pygame.mixer.init()
 pygame.init()
 
 # Defina as configurações da tela
-WIDTH, HEIGHT = 400, 300
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+WIDTH, HEIGHT = 1000, 500
 pygame.display.set_caption("Configuração do Som")
 
 # Carregue o background
@@ -32,7 +31,7 @@ text_title_rect = text_title.get_rect(center=(WIDTH // 2, 50))
 background_sound = pygame.mixer.Sound("src/som_fundo.mp3")
 
 # Carregue o som especial
-special_sound = pygame.mixer.Sound("src/sombolafogo.mpeg")
+special_sound = pygame.mixer.Sound("src/som_da_agua.mp3")
 
 # Variável para controlar o estado do som de fundo e som especial
 sound_background_on = True
@@ -47,6 +46,12 @@ def start_background_sound():
     global background_sound  # Declare background_sound como global
     if sound_background_on:
         background_sound.play(-1)
+
+
+def start_special_sound():
+    global special_sound
+    if sound_special_on:
+        special_sound.play()
 
 
 # Função para parar o som de fundo
@@ -80,6 +85,7 @@ def toggle_special_sound():
 
 # Função para exibir a tela de controle de som
 def sound_configuration():
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -104,7 +110,7 @@ def sound_configuration():
         pygame.draw.rect(screen, BLUE, button_background_rect, border_radius=10)
 
         # Desenhe o botão de controle de som especial
-        button_special_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT - 100, 200, 50)
+        button_special_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT - 90, 200, 50)
         pygame.draw.rect(screen, BLUE, button_special_rect, border_radius=10)
 
         # Desenhe o botão "Voltar ao Menu"

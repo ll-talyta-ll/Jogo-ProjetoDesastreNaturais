@@ -5,8 +5,7 @@ import sys
 pygame.init()
 
 # Defina as configurações da tela
-WIDTH, HEIGHT = 800, 600
-SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
+WIDTH, HEIGHT = 1000, 500
 pygame.display.set_caption("Instrucoes")
 
 # Defina cores
@@ -33,7 +32,7 @@ text_instructions_forty = font.render(
     WHITE,
 )
 text_instructions_five = font.render(
-    "utilize as teclas de seta do seu teclado para isso!", True, WHITE
+    "Utilize as teclas de seta do seu teclado para isso!", True, WHITE
 )
 text_instructions_seven = font.render(
     "4* Não Esqueça de se divertir e boa sorte no jogo ! ●▂●", True, WHITE
@@ -69,6 +68,7 @@ button_instructions_rect = pygame.Rect(
 
 # Função para a tela de menu
 def instructions():
+    SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -107,5 +107,5 @@ def instructions():
         pygame.display.flip()
 
 
-if __name__ == "__main__":
+if __name__ == "_main_":
     instructions()

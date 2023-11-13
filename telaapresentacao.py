@@ -1,13 +1,13 @@
 import pygame
 import sys
 import os
-from select_character import select_character
+from select_character_file import select_character
 
 # Inicialize o Pygame
 pygame.init()
 
 # Defina as configurações da tela
-WIDTH, HEIGHT = 600, 400
+WIDTH, HEIGHT = 1000, 500
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu Pygame")
 
@@ -21,7 +21,7 @@ BLUE = (0, 0, 255)
 # Carregue a fonte personalizada para o título
 font_title = pygame.font.Font("src/IrishGrover-Regular.ttf", 36)
 text_title = font_title.render("Fuga dos Desastres Naturais", True, WHITE)
-text_title_rect = text_title.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+text_title_rect = text_title.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 200))
 
 
 # Classe para os botões
@@ -49,8 +49,9 @@ class Button:
 
 # Função para a tela de apresentação
 def tela_apresentacao():
+    SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
     play_button = Button(
-        WIDTH // 2 - 100, HEIGHT // 2 + 50, 200, 50, "Jogar", play_game
+        WIDTH // 2 - 100, HEIGHT // 2 + 100, 200, 50, "Jogar", play_game
     )
 
     while True:
@@ -67,12 +68,12 @@ def tela_apresentacao():
         # Adicione um texto explicativo
         font_explanation = pygame.font.Font("src/IrishGrover-Regular.ttf", 18)
         explanation_text = font_explanation.render(
-            "Você está em uma floresta em chamas. Evite as bolas de fogo e colete o máximo de água possível!",
+            "Você está em uma floresta em chamas. Evite as bolas de fogo e\n colete o máximo de água possível!",
             True,
             WHITE,
         )
         explanation_rect = explanation_text.get_rect(
-            center=(WIDTH // 2, HEIGHT // 2 + 100)
+            center=(WIDTH // 2, HEIGHT // 2 - 50)
         )
         SCREEN.blit(explanation_text, explanation_rect)
 

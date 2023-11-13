@@ -6,7 +6,7 @@ from main import *
 pygame.init()
 
 # Defina as configurações da tela
-WIDTH, HEIGHT = 400, 300
+WIDTH, HEIGHT = 1000, 500
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu Pygame")
 
@@ -14,9 +14,15 @@ pygame.display.set_caption("Menu Pygame")
 background = pygame.image.load("src/fundo.png").convert()
 
 # Carregue as imagens dos botões
-button_character = pygame.image.load("src/nivel1s.png").convert()
-button_play = pygame.image.load("src/nivel2s.png").convert()
-button_level3 = pygame.image.load("src/nivel3s.png").convert()
+button_character = pygame.transform.scale(
+    pygame.image.load("src/nivel1s.png").convert(), (100, 100)
+)
+button_play = pygame.transform.scale(
+    pygame.image.load("src/nivel2s.png").convert(), (100, 100)
+)
+button_level3 = pygame.transform.scale(
+    pygame.image.load("src/nivel3s.png").convert(), (100, 100)
+)
 
 # Defina a distância vertical entre os botões
 button_gap = 30

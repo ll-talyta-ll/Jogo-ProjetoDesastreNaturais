@@ -6,7 +6,7 @@ from niveisjogo import niveis_jogo
 pygame.init()
 
 # Defina as configurações da tela
-WIDTH, HEIGHT = 400, 300
+WIDTH, HEIGHT = 1000, 500
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Seleção de Personagem")
 
@@ -54,12 +54,12 @@ def select_character():
                     print("Personagem 1 selecionado!")
                     player = "girl"
                     niveis_jogo(player)
-                    #main(60)
+                    # main(60)
                 elif character2_rect.collidepoint(pygame.mouse.get_pos()):
                     print("Personagem 2 selecionado!")
                     player = "boy"
                     niveis_jogo(player)
-                    #main(60)
+                    # main(60)
                 elif button_back_rect.collidepoint(pygame.mouse.get_pos()):
                     return  # Retorne ao menu
 
