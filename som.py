@@ -31,9 +31,15 @@ text_title_rect = text_title.get_rect(center=(WIDTH // 2, 50))
 # Carregue o som de fundo
 background_sound = pygame.mixer.Sound("src/som_fundo.mp3")
 
-# Variável para controlar o estado do som de fundo
+# Carregue o som especial
+special_sound = pygame.mixer.Sound("src/sombolafogo.mpeg")
+
+# Variável para controlar o estado do som de fundo e som especial
 sound_background_on = True
 sound_special_on = True
+
+# Margem entre os botões
+button_margin = 20
 
 
 # Função para iniciar o som de fundo
@@ -60,6 +66,18 @@ def toggle_background_sound():
         sound_background_on = True
 
 
+# Função para ligar/desligar o som especial
+def toggle_special_sound():
+    global sound_special_on
+    if sound_special_on:
+        special_sound.stop()
+        sound_special_on = False
+    else:
+        special_sound.set_volume(100.0)
+        special_sound.play()
+        sound_special_on = True
+
+
 # Função para exibir a tela de controle de som
 def sound_configuration():
     while True:
@@ -70,6 +88,8 @@ def sound_configuration():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_background_rect.collidepoint(pygame.mouse.get_pos()):
                     toggle_background_sound()  # Ligar/desligar som de fundo
+                elif button_special_rect.collidepoint(pygame.mouse.get_pos()):
+                    toggle_special_sound()  # Ligar/desligar som especial
                 elif button_back_rect.collidepoint(pygame.mouse.get_pos()):
                     return  # Voltar ao Menu
 
@@ -82,6 +102,10 @@ def sound_configuration():
         # Desenhe o botão de controle de som de fundo
         button_background_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT - 150, 200, 50)
         pygame.draw.rect(screen, BLUE, button_background_rect, border_radius=10)
+
+        # Desenhe o botão de controle de som especial
+        button_special_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT - 100, 200, 50)
+        pygame.draw.rect(screen, BLUE, button_special_rect, border_radius=10)
 
         # Desenhe o botão "Voltar ao Menu"
         button_back_rect = pygame.Rect(WIDTH // 2 - 75, HEIGHT - 30, 150, 20)
@@ -100,6 +124,17 @@ def sound_configuration():
             center=button_background_rect.center
         )
         screen.blit(text_background, button_background_text_rect)
+
+        # Renderize o texto no botão de controle de som especial
+        text_special = font_small.render(
+            "Som Especial: " + ("Ligado" if sound_special_on else "Desligado"),
+            True,
+            WHITE,
+        )
+        button_special_text_rect = text_special.get_rect(
+            center=button_special_rect.center
+        )
+        screen.blit(text_special, button_special_text_rect)
 
         pygame.display.flip()
 

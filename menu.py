@@ -5,6 +5,7 @@ import os
 from telaapresentacao import tela_apresentacao
 from instructions import instructions
 from som import start_background_sound, sound_configuration
+from main import main
 
 # from som import sound_configuration
 
@@ -81,10 +82,6 @@ def main_menu():
         SCREEN.blit(text_instructions, text_instructions_rect)
         SCREEN.blit(text_sound, text_sound_rect)
         pygame.display.flip()
-
-
-def open_select_character():
-    os.system("py select_character.py")
 
 
 if __name__ == "__main__":

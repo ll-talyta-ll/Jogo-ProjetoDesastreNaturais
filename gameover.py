@@ -1,8 +1,6 @@
 import pygame
 import sys
 import pygame.gfxdraw
-# from menu import main_menu
-
 # Inicialize o Pygame
 pygame.init()
 
@@ -51,24 +49,24 @@ def game_over():
         SCREEN.blit(text_title, text_title_rect)
 
         # Desenhe os botões
-        # pygame.gfxdraw.box(SCREEN, button_instructions_rect_third, RED)
-        # pygame.gfxdraw.box(SCREEN, button_instructions_rect_seven, BLUE)
-        # pygame.gfxdraw.box(SCREEN, button_instructions_rect_menu, BLUE)  # Agora, o botão Menu é azul
+        pygame.gfxdraw.box(SCREEN, button_instructions_rect_third, RED)
+        pygame.gfxdraw.box(SCREEN, button_instructions_rect_seven, BLUE)
+        pygame.gfxdraw.box(SCREEN, button_instructions_rect_menu, BLUE)  # Agora, o botão Menu é azul
 
-        # # Posicione o texto nos botões
-        # text_instructions_rect_third = text_instructions_third.get_rect(
-        #     center=button_instructions_rect_third.center
-        # )
-        # text_instructions_rect_seven = text_instructions_seven.get_rect(
-        #     center=button_instructions_rect_seven.center
-        # )
-        # text_instructions_rect_menu = text_instructions_menu.get_rect(
-        #     center=button_instructions_rect_menu.center
-        # )
+        # Posicione o texto nos botões
+        text_instructions_rect_third = text_instructions_third.get_rect(
+            center=button_instructions_rect_third.center
+        )
+        text_instructions_rect_seven = text_instructions_seven.get_rect(
+            center=button_instructions_rect_seven.center
+        )
+        text_instructions_rect_menu = text_instructions_menu.get_rect(
+            center=button_instructions_rect_menu.center
+        )
 
-        # SCREEN.blit(text_instructions_third, text_instructions_rect_third)
-        # SCREEN.blit(text_instructions_seven, text_instructions_rect_seven)
-        # SCREEN.blit(text_instructions_menu, text_instructions_rect_menu)
+        SCREEN.blit(text_instructions_third, text_instructions_rect_third)
+        SCREEN.blit(text_instructions_seven, text_instructions_rect_seven)
+        SCREEN.blit(text_instructions_menu, text_instructions_rect_menu)
 
         pygame.display.flip()
 
