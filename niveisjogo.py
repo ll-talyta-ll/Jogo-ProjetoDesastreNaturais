@@ -59,15 +59,15 @@ def niveis_jogo(player):
                 if button_character_rect.collidepoint(pygame.mouse.get_pos()):
                     print("Botão do Nível 1 pressionado!")
                     print(player)
-                    main(60, character=player)
+                    main(60, player)
                     # Adicione a lógica do botão de personagem aqui
                 elif button_play_rect.collidepoint(pygame.mouse.get_pos()):
                     print("Botão do Nível 2 pressionado!")
-                    main(120, character=player)
+                    main(120, player)
                     # Adicione a lógica do botão de jogar aqui
                 elif button_level3_rect.collidepoint(pygame.mouse.get_pos()):
                     print("Botão do Nível 3 pressionado!")
-                    main(180, character=player)
+                    main(180, player)
 
         # Atualize a tela
         SCREEN.blit(background, (0, 0))

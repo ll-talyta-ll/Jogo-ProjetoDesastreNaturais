@@ -2,7 +2,7 @@ import pygame
 import sys
 import pygame.gfxdraw
 import os
-from select_character import select_character
+from telaapresentacao import tela_apresentacao
 from instructions import instructions
 from som import start_background_sound, sound_configuration
 
@@ -54,7 +54,7 @@ def main_menu():
                 if button_character_rect.collidepoint(pygame.mouse.get_pos()):
                     print("Botão de Iniciar Partida pressionado!")
                     # Abrir a tela de seleção de personagem em um novo processo
-                    select_character()
+                    tela_apresentacao()
                 elif button_instructions_rect.collidepoint(pygame.mouse.get_pos()):
                     print("Botão de Instruções pressionado!")
                     instructions()

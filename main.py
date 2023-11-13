@@ -1,22 +1,25 @@
 import pygame
 import random
-import sys
+from util import *
+from gameover import game_over
 
 largura = 1000
-altura = 500
+largura_obstaculo = 2000
+altura_obstaculo = 500
+altura = 400
 frames = 60
-solo = 220
+# posição do solo
+solo = 320
+# Campo utilizado para manipular a velocidade do cenário
 velocidade_mapa = 2
-gravidade = 1
 
 
+# Manipulação do obstaculo na base inferior da tela
 class Cano(pygame.sprite.Sprite):
-    def __init__(self, imagem, is_coin=False):
-        super().__init__()
+    def __init__(self, imagem):
         self.imagem = imagem
         self.rect = self.imagem.get_rect()
-        self.rect.top, self.rect.left = 270, largura + random.randint(0, 1000)
-        self.is_coin = is_coin
+        self.rect.top, self.rect.left = 270, largura_obstaculo + random.randint(0, 1000)
 
     def update(self, superficie):
         superficie.blit(self.imagem, self.rect)
@@ -26,12 +29,13 @@ class Cano(pygame.sprite.Sprite):
 
     def recriar(self):
         if self.rect.left < -400:
-            self.rect.top, self.rect.left = 270, largura + random.randint(0, 2000)
+            self.rect.top, self.rect.left = 270, largura_obstaculo + random.randint(
+                0, 2000
+            )
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, imagem):
-        super().__init__()
         self.imagem = imagem
         self.rect = self.imagem.get_rect()
         self.rect.top, self.rect.left = (solo, 100)
@@ -44,20 +48,20 @@ class Player(pygame.sprite.Sprite):
 
 
 def colisao(player, rect):
-    return player.rect.colliderect(rect)
-
-
-def game_over(tela, pontos):
-    fonte = pygame.font.SysFont(None, 70)
-    mensagem = fonte.render(f"Game Over - Pontuação: {int(pontos)}", True, "white")
-    tela.blit(mensagem, (largura // 4, altura // 3))
-    pygame.display.flip()
-    pygame.time.wait(2000)
+    if player.rect.colliderect(rect):
+        return True
+    else:
+        return False
 
 
 def main(frames, character):
     pygame.init()
+    pygame.font.init()
+
+    font = pygame.font.SysFont(None, 70)
     tela = pygame.display.set_mode([largura, altura])
+
+    relogio = pygame.time.Clock()
 
     if character == "girl":
         img_girl = pygame.transform.scale(
@@ -74,16 +78,7 @@ def main(frames, character):
 
     img_fundo1 = pygame.image.load("src/fundo.png").convert_alpha()
     img_fundo2 = pygame.image.load("src/fundo.png").convert_alpha()
-    img_fundo1 = pygame.transform.scale(img_fundo1, (largura, altura))
-    img_fundo2 = pygame.transform.scale(img_fundo2, (largura, altura))
-
-    coin = pygame.transform.scale(
-        pygame.image.load("src/coin.png").convert_alpha(), (50, 50)
-    )
-    coin.set_colorkey((0, 0, 0))
-
-    # Grupo para os sprites de canos e moedas
-    all_sprites = pygame.sprite.Group()
+    cano = pygame.image.load("src/fire.png").convert_alpha()
 
     vx, vy = 0, 0
     velocidade = 20
@@ -91,12 +86,27 @@ def main(frames, character):
     sair = False
     x = 0
     y = largura
-
+    cano = Cano(cano)
     pontos = 0
+    while sair is False:
+        if int(pontos) % 50 == 0:
+            frames += 1
+        pontos += 0.1
+        cano.recriar()
 
-    clock = pygame.time.Clock()
+        y -= velocidade_mapa
+        x -= velocidade_mapa
+        if x == -largura:
+            x = largura
+        if y == -largura:
+            y = largura
 
-    while not sair:
+        if jogador.rect.top < solo:
+            vy += 1
+        elif jogador.rect.top >= solo:
+            vy = 0
+            jogador.rect.top = solo
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sair = True
@@ -105,56 +115,24 @@ def main(frames, character):
                     uppress = True
                     vy = -velocidade
 
-        # Aplique a gravidade
-        vy += gravidade
-
-        if jogador.rect.top < solo:
-            jogador.rect.top = solo  # Evite que o jogador vá abaixo do solo
-            vy = 0  # Reinicie a velocidade vertical
-
-        jogador.mover(vx, vy)
-
-        # Cria novos canos e moedas aleatoriamente
-        if random.randint(0, 100) < 5:  # Ajuste o número conforme necessário
-            all_sprites.add(Cano(coin, is_coin=True))
-        elif random.randint(0, 100) < 5:  # Ajuste o número conforme necessário
-            all_sprites.add(
-                Cano(
-                    pygame.transform.scale(
-                        pygame.image.load("src/fire.png").convert_alpha(), (100, 100)
-                    )
-                )
-            )
-
-        for sprite in all_sprites:
-            sprite.mover()
-            sprite.update(tela)
-
-            # Colisão com o cano ou moeda
-            if colisao(jogador, sprite):
-                if sprite.is_coin:
-                    pontos += 100
-                    sprite.recriar()
-                else:
-                    game_over(tela, pontos)
-                    return
-
         tela.blit(img_fundo1, (x, 0))
         tela.blit(img_fundo2, (y, 0))
         jogador.update(tela)
+        jogador.mover(vx, vy)
+        cano.update(tela)
+        cano.mover()
 
-        img = pygame.font.SysFont(None, 70).render(
-            f"Pontuação: {int(pontos)}", True, "white"
-        )
+        if colisao(jogador, cano):
+            print(f"Você fez {int(pontos)} pontos")
+            frames = 60
+            game_over()
+
+        img = font.render(f"{int(pontos)} pontos", True, "white")
         tela.blit(img, (700, 100))
-
-        all_sprites.update(tela)
-
-        pygame.display.flip()
-        clock.tick(frames)
-
+        relogio.tick(frames)
+        pygame.display.update()
     pygame.quit()
 
 
 if __name__ == "__main__":
-    main(frames, pygame.image.load("src/character.png"))
+    main(frames, "girl")

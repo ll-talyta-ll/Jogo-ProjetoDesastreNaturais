@@ -1,7 +1,7 @@
 import pygame
 import sys
 import os
-from menu import main_menu
+from select_character import select_character
 
 # Inicialize o Pygame
 pygame.init()
@@ -83,8 +83,8 @@ def tela_apresentacao():
 
 # Função para iniciar o jogo
 def play_game():
-    main_menu()
     print("Iniciando o jogo!")
+    select_character()
 
 
 if __name__ == "__main__":
