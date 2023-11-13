@@ -1,33 +1,36 @@
 import pygame
 import sys
 import os
+from select_character_file import select_character
 
 # Inicialize o Pygame
 pygame.init()
 
 # Defina as configurações da tela
-WIDTH, HEIGHT = 600, 400
+WIDTH, HEIGHT = 1000, 500
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu Pygame")
 
 # Carregue o background
-background = pygame.image.load("fundo.png").convert()
+background = pygame.image.load("src/fundo.png").convert()
 
 # Defina as cores
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 
 # Carregue a fonte personalizada para o título
-font_title = pygame.font.Font("IrishGrover-Regular.ttf", 36)
+font_title = pygame.font.Font("src/IrishGrover-Regular.ttf", 36)
 text_title = font_title.render("Fuga dos Desastres Naturais", True, WHITE)
-text_title_rect = text_title.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+text_title_rect = text_title.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 200))
 
+
+# Classe para os botões
 class Button:
     def __init__(self, x, y, width, height, text, action=None):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.action = action
-        self.font = pygame.font.Font("IrishGrover-Regular.ttf", 24)
+        self.font = pygame.font.Font("src/IrishGrover-Regular.ttf", 24)
 
     def draw(self):
         pygame.draw.rect(SCREEN, BLUE, self.rect)  # Define o background como azul
@@ -43,9 +46,13 @@ class Button:
                 if self.action:
                     self.action()
 
-# Função para a tela de menu
-def main_menu():
-    play_button = Button(WIDTH // 2 - 100, HEIGHT // 2 + 50, 200, 50, "Jogar", play_game)
+
+# Função para a tela de apresentação
+def tela_apresentacao():
+    SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
+    play_button = Button(
+        WIDTH // 2 - 100, HEIGHT // 2 + 100, 200, 50, "Jogar", play_game
+    )
 
     while True:
         for event in pygame.event.get():
@@ -58,13 +65,28 @@ def main_menu():
         SCREEN.blit(background, (0, 0))
         SCREEN.blit(text_title, text_title_rect)
 
+        # Adicione um texto explicativo
+        font_explanation = pygame.font.Font("src/IrishGrover-Regular.ttf", 18)
+        explanation_text = font_explanation.render(
+            "Você está em uma floresta em chamas. Evite as bolas de fogo e\n colete o máximo de água possível!",
+            True,
+            WHITE,
+        )
+        explanation_rect = explanation_text.get_rect(
+            center=(WIDTH // 2, HEIGHT // 2 - 50)
+        )
+        SCREEN.blit(explanation_text, explanation_rect)
+
         play_button.draw()
 
         pygame.display.flip()
 
+
+# Função para iniciar o jogo
 def play_game():
-    # Adicione aqui o código para iniciar o jogo
     print("Iniciando o jogo!")
+    select_character()
+
 
 if __name__ == "__main__":
-    main_menu()
+    tela_apresentacao()
