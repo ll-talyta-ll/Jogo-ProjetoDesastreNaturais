@@ -35,6 +35,24 @@ text_sound = font.render("Som", True, WHITE)
 font_title = pygame.font.Font("src/IrishGrover-Regular.ttf", 36)
 text_title = font_title.render("Salve-se Quem Puder", True, WHITE)
 text_title_rect = text_title.get_rect(center=(WIDTH // 2, 50))
+background = pygame.image.load("src/fundo.png").convert()
+
+# Defina cores
+WHITE = (255, 255, 255)
+BLUE = (0, 0, 255)
+
+# Carregue a fonte personalizada
+font = pygame.font.Font("src/IrishGrover-Regular.ttf", 24)
+
+# Renderize o texto dos botões com a fonte personalizada
+text_character = font.render("Iniciar partida", True, WHITE)
+text_instructions = font.render("Instruções", True, WHITE)
+text_sound = font.render("Som", True, WHITE)
+
+# Carregue a fonte personalizada para o título
+font_title = pygame.font.Font("src/IrishGrover-Regular.ttf", 36)
+text_title = font_title.render("Salve-se Quem Puder", True, WHITE)
+text_title_rect = text_title.get_rect(center=(WIDTH // 2, 50))
 
 # Defina as posições dos botões
 button_character_rect = pygame.Rect(WIDTH // 2 - 150, HEIGHT // 2 - 50, 300, 50)
@@ -78,7 +96,20 @@ def main_menu():
             center=button_instructions_rect.center
         )
         text_sound_rect = text_sound.get_rect(center=button_sound_rect.center)
+        SCREEN.blit(text_title, text_title_rect)
+        pygame.gfxdraw.box(SCREEN, button_character_rect, BLUE)
+        pygame.gfxdraw.box(SCREEN, button_instructions_rect, BLUE)
+        pygame.gfxdraw.box(SCREEN, button_sound_rect, BLUE)
+        text_character_rect = text_character.get_rect(
+            center=button_character_rect.center
+        )
+        text_instructions_rect = text_instructions.get_rect(
+            center=button_instructions_rect.center
+        )
+        text_sound_rect = text_sound.get_rect(center=button_sound_rect.center)
         SCREEN.blit(text_character, text_character_rect)
+        SCREEN.blit(text_instructions, text_instructions_rect)
+        SCREEN.blit(text_sound, text_sound_rect)
         SCREEN.blit(text_instructions, text_instructions_rect)
         SCREEN.blit(text_sound, text_sound_rect)
         pygame.display.flip()
