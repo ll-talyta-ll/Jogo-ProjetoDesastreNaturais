@@ -23,12 +23,14 @@ font_title = pygame.font.Font("src/IrishGrover-Regular.ttf", 36)
 text_title = font_title.render("Fuga dos Desastres Naturais", True, WHITE)
 text_title_rect = text_title.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 
+
+# Classe para os botões
 class Button:
     def __init__(self, x, y, width, height, text, action=None):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.action = action
-        self.font = pygame.font.Font("IrishGrover-Regular.ttf", 24)
+        self.font = pygame.font.Font("src/IrishGrover-Regular.ttf", 24)
 
     def draw(self):
         pygame.draw.rect(SCREEN, BLUE, self.rect)  # Define o background como azul
@@ -44,9 +46,12 @@ class Button:
                 if self.action:
                     self.action()
 
-# Função para a tela de menu
+
+# Função para a tela de apresentação
 def tela_apresentacao():
-    play_button = Button(WIDTH // 2 - 100, HEIGHT // 2 + 50, 200, 50, "Jogar", play_game)
+    play_button = Button(
+        WIDTH // 2 - 100, HEIGHT // 2 + 50, 200, 50, "Jogar", play_game
+    )
 
     while True:
         for event in pygame.event.get():
@@ -59,15 +64,28 @@ def tela_apresentacao():
         SCREEN.blit(background, (0, 0))
         SCREEN.blit(text_title, text_title_rect)
 
+        # Adicione um texto explicativo
+        font_explanation = pygame.font.Font("src/IrishGrover-Regular.ttf", 18)
+        explanation_text = font_explanation.render(
+            "Você está em uma floresta em chamas. Evite as bolas de fogo e colete o máximo de água possível!",
+            True,
+            WHITE,
+        )
+        explanation_rect = explanation_text.get_rect(
+            center=(WIDTH // 2, HEIGHT // 2 + 100)
+        )
+        SCREEN.blit(explanation_text, explanation_rect)
+
         play_button.draw()
 
         pygame.display.flip()
 
+
+# Função para iniciar o jogo
 def play_game():
-    # Adicione aqui o código para iniciar o jogo
-    #os.system("py menu.py")]
     main_menu()
     print("Iniciando o jogo!")
+
 
 if __name__ == "__main__":
     tela_apresentacao()

@@ -4,6 +4,7 @@ import pygame.gfxdraw
 import os
 from select_character import select_character
 from instructions import instructions
+from som import start_background_sound, sound_configuration
 
 # from som import sound_configuration
 
@@ -44,6 +45,7 @@ button_sound_rect = pygame.Rect(WIDTH // 2 - 150, HEIGHT // 2 + 70, 300, 50)
 # Função para a tela de menu
 def main_menu():
     while True:
+        start_background_sound()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -59,7 +61,7 @@ def main_menu():
                     # Adicione a lógica para exibir as instruções aqui
                 elif button_sound_rect.collidepoint(pygame.mouse.get_pos()):
                     print("Botão de Ligar/Desligar Som pressionado!")
-                    # sound_configuration()
+                    sound_configuration()
                     # Adicione a lógica para ligar/desligar o som aqui
 
         SCREEN.fill(WHITE)
